@@ -1,0 +1,70 @@
+create database miscelanea;
+
+--* creacion de tablas
+
+create table clientes (
+    id int IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(40) not null,
+    apellidos varchar(40) not null,
+    telefono int not null
+);
+
+create table carrito ( 
+    id int IDENTITY(1,1) PRIMARY KEY,
+    id_cliente int not null,
+    total_producto money not null,
+    saldo_pagado money null,
+    saldo_deudor money null,
+    total_cuenta money not null,
+);
+
+create table carrito_producto (
+    id_carrito int not null,
+    id_producto int not null,
+    cantidad int not null,
+    subtotal money not null
+);
+
+create table productos (
+    id int  IDENTITY(1,1) PRIMARY key,
+    id_proveedor int not null,
+    nombre varchar(40) not NULL,
+    precio money not null,
+    costo money not null,
+    descripcion varchar not null,
+    stock int null
+);
+
+create table proveedores (
+    id int IDENTITY(1,1) PRIMARY KEY not null,
+    nombre varchar(40) not null
+);
+
+
+--* declaracion de llaves foraneas
+alter table carrito ADD FOREIGN key (id_cliente) REFERENCES clientes(id); 
+alter table productos add FOREIGN KEY(id_proveedor) REFERENCES proveedores(id);
+alter table carrito_producto add FOREIGN KEY (id_carrito) REFERENCES carrito(id);
+alter table carrito_producto add FOREIGN key (id_producto) REFERENCES productos(id);
+
+
+--* sentencia para agregar columna
+ALTER table proveedores ADD telefono int not null;
+
+--* sentencia para borrar columna
+alter table proveedores drop COLUMN telefono
+
+--* sentencia para modificar columna
+alter table clientes ALTER COLUMN apellidos varchar(40); 
+
+select * from proveedores;
+
+
+insert into carrito (id_cliente,total_producto,saldo_pagado,saldo_deudor,total_cuenta) values(1,20,20,0,20);
+
+insert into clientes(nombre,apellidos,telefono) values ('liliana','segura',1234567890);
+
+
+
+select * from clientes
+select * from carrito

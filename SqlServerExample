@@ -12,10 +12,10 @@ create table clientes (
 create table carrito ( 
     id int IDENTITY(1,1) PRIMARY KEY,
     id_cliente int not null,
-    total_producto money not null,
+    total_producto money null,
     saldo_pagado money null,
     saldo_deudor money null,
-    total_cuenta money not null,
+    total_cuenta money  null,
 );
 
 create table carrito_producto (
@@ -39,6 +39,22 @@ create table proveedores (
     id int IDENTITY(1,1) PRIMARY KEY not null,
     nombre varchar(40) not null
 );
+
+--* Creacion de vista factura
+create view factura_view as 
+select carpro.id_carrito, carrito.id_cliente, carpro.id_producto, productos.nombre,
+carpro.subtotal, carpro.cantidad, carpro.cantidad * carpro.subtotal as total
+from carrito_producto as carpro JOIN carrito on carpro.id_carrito = carrito.id
+join productos on carpro.id_producto = productos.id;
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------    PRUEBAS     --------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 
 --* declaracion de llaves foraneas
@@ -64,12 +80,6 @@ insert into carrito (id_cliente,total_producto,saldo_pagado,saldo_deudor,total_c
 
 insert into clientes(nombre,apellidos,telefono) values ('liliana','segura',1234567890);
 
---* Creacion de vista factura
-create view factura_view as 
-select carpro.id_carrito, carrito.id_cliente, carpro.id_producto, productos.nombre,
-carpro.subtotal, carpro.cantidad, carpro.cantidad * carpro.subtotal as total
-from carrito_producto as carpro JOIN carrito on carpro.id_carrito = carrito.id
-join productos on carpro.id_producto = productos.id;
 
 select * from clientes
 select * from carrito

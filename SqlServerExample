@@ -64,7 +64,12 @@ insert into carrito (id_cliente,total_producto,saldo_pagado,saldo_deudor,total_c
 
 insert into clientes(nombre,apellidos,telefono) values ('liliana','segura',1234567890);
 
-
+--* Creacion de vista factura
+create view factura_view as 
+select carpro.id_carrito, carrito.id_cliente, carpro.id_producto, productos.nombre,
+carpro.subtotal, carpro.cantidad, carpro.cantidad * carpro.subtotal as total
+from carrito_producto as carpro JOIN carrito on carpro.id_carrito = carrito.id
+join productos on carpro.id_producto = productos.id;
 
 select * from clientes
 select * from carrito
